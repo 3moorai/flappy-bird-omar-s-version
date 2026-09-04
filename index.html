@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Flappy Bird 🌋❄️ • Magma & Frost Edition</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@600;700&family=Cairo:wght@700;900&display=swap" rel="stylesheet">
+</head>
+<body class="theme-magma">
+  <div class="page-wrapper">
+
+    <!-- Main Arcade Cabinet / Fullscreen App -->
+    <div class="arcade-cabinet" id="arcadeCabinet">
+      
+      <!-- Top Modern Glassmorphic HUD -->
+      <header class="cabinet-hud">
+        <!-- Brand & Mode Controls -->
+        <div class="hud-brand-section">
+          <div class="brand-badge" id="brandBadge">
+            <span class="pulse-dot"></span>
+            <span class="brand-text">FLAPPY BIRD</span>
+          </div>
+
+          <!-- Quick Mode Toggle Button -->
+          <button class="mode-toggle-btn" id="themeToggleBtn" title="تبديل الوضع (T)">
+            <span class="mode-toggle-icon" id="modeToggleIcon">❄️</span>
+            <span class="mode-toggle-label" id="modeToggleLabel">الوضع الجليدي</span>
+          </button>
+
+          <!-- Energy Matrix Bar -->
+          <div class="energy-gauge-group">
+            <div class="energy-meta">
+              <span class="meta-title" id="energyTitle">OVERHEAT MATRIX</span>
+              <span class="meta-status" id="overheatStatus">CHARGING [0%]</span>
+            </div>
+            <div class="energy-track">
+              <div class="energy-fill" id="overheatBar"></div>
+              <div class="energy-glow"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Telemetry Stats & Action Controls -->
+        <div class="hud-stats-section">
+          <div class="modern-card">
+            <span class="card-tag">SCORE</span>
+            <span class="card-val" id="scoreDisplay">0</span>
+          </div>
+          <div class="modern-card combo-card">
+            <span class="card-tag">COMBO</span>
+            <span class="card-val" id="comboDisplay">0x</span>
+          </div>
+
+          <!-- Utility Actions -->
+          <div class="hud-actions-group">
+            <button class="hud-action-btn" id="fullscreenBtn" title="ملء الشاشة بالكامل (F)">
+              <span class="btn-icon">⛶</span>
+              <span class="btn-text">ملء الشاشة</span>
+            </button>
+            <button class="hud-action-btn" id="muteBtn" title="كتم / تشغيل الصوت (M)">
+              <span class="btn-icon" id="muteIcon">🔊</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Neon Divider Bar -->
+      <div class="neon-divider"></div>
+
+      <!-- Full-Window Canvas Viewport -->
+      <main class="canvas-viewport" id="canvasViewport">
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- Start Overlay -->
+        <div class="viewport-overlay" id="startOverlay">
+          <div class="modern-modal">
+            <div class="modal-glow-avatar">
+              <img src="yellowbird_midflap.png" alt="Flappy Bird" class="avatar-img" id="startAvatarImg">
+            </div>
+
+            <h2 class="modal-title" id="modalMainTitle">FLAPPY BIRD IS READY!</h2>
+            <p class="modal-desc" id="modalMainDesc">اختر العالم واضغط مسطرة المسافة (Space) أو انقر للتحليق</p>
+
+            <!-- Interactive Biome / Mode Selector -->
+            <div class="biome-selector">
+              <button class="biome-btn active" data-mode="magma" id="biomeMagmaBtn">
+                <span class="b-icon">🌋</span>
+                <span class="b-title">عالم الحمم (Magma)</span>
+              </button>
+              <button class="biome-btn" data-mode="frost" id="biomeFrostBtn">
+                <span class="b-icon">❄️</span>
+                <span class="b-title">عالم الجليد (Frost)</span>
+              </button>
+            </div>
+
+            <button class="launch-btn" id="startBtn">
+              <span>START FLAPPING</span>
+              <small>ابـدأ الطـيران</small>
+            </button>
+
+            <div class="high-tag">
+              👑 RECORD HIGH: <span id="bestScoreStart">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Game Over Overlay -->
+        <div class="viewport-overlay hidden" id="gameOverOverlay">
+          <div class="modern-modal gameover-modal">
+            <h2 class="modal-title go-red">GAME OVER</h2>
+            <p class="modal-desc">لقد اصطدم طائر فلابي بيرد</p>
+            <div class="stats-table">
+              <div class="row"><span>FINAL SCORE:</span><strong id="finalScore">0</strong></div>
+              <div class="row highlight"><span>RECORD SCORE:</span><strong id="bestScore">0</strong></div>
+              <div class="row"><span>MAX COMBO:</span><strong id="finalCombo">0x</strong></div>
+            </div>
+            <button class="launch-btn retry-btn" id="replayBtn">
+              <span>PLAY AGAIN</span>
+              <small>إعادة المحاولة</small>
+            </button>
+          </div>
+        </div>
+
+      </main>
+
+      <!-- Sleek Desktop Bottom Dock / Controls Bar -->
+      <footer class="modern-footer">
+        <div class="control-pill">
+          <span class="key">SPACE / TAP</span>
+          <span class="act">رفرفة الأجنحة والقفز</span>
+        </div>
+        <div class="control-pill">
+          <span class="key">10x COMBO</span>
+          <span class="act" id="footerComboHint">طور الفينيق الخارق والتحطيم</span>
+        </div>
+        <div class="control-pill">
+          <span class="key">T</span>
+          <span class="act">تبديل بركاني / جليدي</span>
+        </div>
+        <div class="control-pill">
+          <span class="key">F</span>
+          <span class="act">شاشة كاملة</span>
+        </div>
+        <div class="control-pill">
+          <span class="key">M</span>
+          <span class="act">الصوت</span>
+        </div>
+      </footer>
+
+    </div>
+
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
